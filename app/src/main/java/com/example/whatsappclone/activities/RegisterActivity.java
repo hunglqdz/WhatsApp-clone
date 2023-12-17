@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.whatsappclone.databinding.ActivityRegisterBinding;
 import com.example.whatsappclone.utils.Constants;
+import com.example.whatsappclone.utils.PreferenceManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
+    private PreferenceManager preferenceManager;
     private String encodedImage;
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -52,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
     }
 
@@ -82,7 +85,17 @@ public class RegisterActivity extends AppCompatActivity {
         user.put(Constants.KEY_PASSWORD, binding.password.getText().toString());
         user.put(Constants.KEY_IMAGE, encodedImage);
         database.collection(Constants.KEY_COLLECTION_USERS).add(user).addOnSuccessListener(documentReference -> {
+            loading(false);
+            preferenceManager.putBoolean(Constants.KEY_IS_LOGIN, true);
+            preferenceManager.putString(Constants.KEY_USER_ID, documentReference.getId());
+            preferenceManager.putString(Constants.KEY_NAME, binding.name.getText().toString());
+            preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }).addOnFailureListener(exception -> {
+            loading(false);
+            showToast(exception.getMessage());
         });
     }
 
@@ -107,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
             showToast("Enter email");
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(binding.email.getText().toString()).matches()) {
-            showToast("Enter valid image");
+            showToast("Enter valid email");
             return false;
         } else if (binding.password.getText().toString().trim().isEmpty()) {
             showToast("Enter password");
