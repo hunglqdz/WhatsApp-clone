@@ -1,12 +1,12 @@
 package com.example.whatsappclone.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.whatsappclone.adapters.UserAdapter;
 import com.example.whatsappclone.databinding.ActivityUserBinding;
+import com.example.whatsappclone.listeners.UserListener;
 import com.example.whatsappclone.models.User;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.PreferenceManager;
@@ -16,7 +16,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends BaseActivity implements UserListener {
     private ActivityUserBinding binding;
     private PreferenceManager preferenceManager;
 
@@ -52,10 +52,11 @@ public class UserActivity extends AppCompatActivity {
                     user.email = queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
                     user.image = queryDocumentSnapshot.getString(Constants.KEY_IMAGE);
                     user.token = queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN);
+                    user.id = queryDocumentSnapshot.getId();
                     users.add(user);
                 }
                 if (users.size() > 0) {
-                    UserAdapter userAdapter = new UserAdapter(users);
+                    UserAdapter userAdapter = new UserAdapter(users, this);
                     binding.rv.setAdapter(userAdapter);
                     binding.rv.setVisibility(View.VISIBLE);
                 } else {
@@ -79,5 +80,13 @@ public class UserActivity extends AppCompatActivity {
         } else {
             binding.progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void onUserClicked(User user) {
+        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+        intent.putExtra(Constants.KEY_USER, user);
+        startActivity(intent);
+        finish();
     }
 }

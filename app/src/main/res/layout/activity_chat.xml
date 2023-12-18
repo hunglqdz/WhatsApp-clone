@@ -13,7 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@id/send"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/green"
+        app:layout_constraintBottom_toTopOf="@id/view_supporter"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -49,13 +58,34 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/white"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/back"
         app:layout_constraintEnd_toStartOf="@id/info"
         app:layout_constraintStart_toEndOf="@id/back"
         app:layout_constraintTop_toTopOf="@id/back" />
+
+    <View
+        android:id="@+id/view_supporter"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/back" />
+
+    <TextView
+        android:id="@+id/availability"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green"
+        android:gravity="center"
+        android:padding="@dimen/_2sdp"
+        android:text="Online"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_10ssp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/view_supporter" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
@@ -67,8 +97,9 @@
         android:padding="@dimen/_20sdp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/back" />
+        app:layout_constraintBottom_toBottomOf="@id/view_background"
+        app:layout_constraintTop_toBottomOf="@id/view_supporter"
+        app:stackFromEnd="true" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -105,6 +136,7 @@
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginEnd="@dimen/_8sdp"
         android:layout_marginBottom="@dimen/_12sdp"
+        android:gravity="start"
         android:hint="Type a message"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
