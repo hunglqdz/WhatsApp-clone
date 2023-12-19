@@ -33,8 +33,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        binding.registerText.setOnClickListener(v ->
-                startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
+        binding.registerText.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+            finish();
+        });
         binding.loginBtn.setOnClickListener(v -> {
             if (isValidLoginDetails()) {
                 login();

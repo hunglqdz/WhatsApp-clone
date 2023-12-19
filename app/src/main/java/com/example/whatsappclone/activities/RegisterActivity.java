@@ -39,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
                             InputStream inputStream = getContentResolver().openInputStream(imageUri);
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             binding.profileImage.setImageBitmap(bitmap);
-                            binding.addImageText.setVisibility(View.GONE);
+                            binding.addPhoto.setVisibility(View.GONE);
                             encodedImage = encodeImage(bitmap);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -59,7 +59,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        binding.loginText.setOnClickListener(v -> onBackPressed());
+        binding.loginText.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
         binding.registerBtn.setOnClickListener(v -> {
             if (isValidRegisterDetails()) {
                 register();
