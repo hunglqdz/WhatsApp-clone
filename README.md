@@ -12,3 +12,5 @@ I utilize Android Studio and Firebase to develop a simple chat application.
 ## Installation
 
 Please download the apk file in the release section.
+
+GitHub [link](https://github.com/hunglqdz/WhatsApp-clone)
